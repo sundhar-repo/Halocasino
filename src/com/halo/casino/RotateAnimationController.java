@@ -1,4 +1,4 @@
-package com.example.newtest;
+package com.halo.casino;
 
 import java.util.Random;
 
