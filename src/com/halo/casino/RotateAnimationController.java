@@ -29,6 +29,8 @@ public class RotateAnimationController implements AnimationListener{
 	private float mAnimationDegree;
 	private int mPrevChannel = 0;
 	int i = 0;
+	private MainActivity mainActivity;
+	private int stopDegreeValue;
 
 	private int DEGREES_TO_ROTATE;
 	private static final long ANIMATION_DURATION = 10000;
@@ -43,15 +45,15 @@ public class RotateAnimationController implements AnimationListener{
 		mRotaryImage = rotaryImage;
 	}
 
-	public void startChannelAnimation(final int nextChannel, Context context) {
+	public void startChannelAnimation(final MainActivity object, Context context) {
 		mContext = context;
+		mainActivity = object;
 		DEGREES_TO_ROTATE = 360;
-		Log.d(TAG, "raja startChannelAnimation : next = " + nextChannel + " prev = " + mPrevChannel);
-		//if(mPrevChannel != nextChannel) {
-			Log.d(TAG, "raja [ANIM] (n, p) = (" + nextChannel + "," + mPrevChannel + ")");
-			rotate(0, nextChannel);
-			mPrevChannel = nextChannel;
-		//}
+		Log.d(TAG, "raja startChannelAnimation : next = " + 1 + " prev = " + mPrevChannel);
+		
+		Log.d(TAG, "raja [ANIM] (n, p) = (" + 1 + "," + mPrevChannel + ")");
+		rotate(0, 1);
+		mPrevChannel = 1;
 	}
 
 	private void rotate(final int prev, final int next) {
@@ -80,10 +82,10 @@ public class RotateAnimationController implements AnimationListener{
 		} else {
 			steps = steps * -1;
 		}*/
-		float stopDegree = getRandomNumberFrom(0, 35) * 10;
-		float steps = 10 * -1;
-		Log.d(TAG, "raja computeCurrentRotationAngle steps ="+ steps + " stopDegree: "+stopDegree);
-		return (steps * DEGREES_TO_ROTATE) + stopDegree;
+		stopDegreeValue = getRandomNumberFrom(0, 35) * 10;
+		int steps = 10 * -1;
+		Log.d(TAG, "raja computeCurrentRotationAngle steps ="+ steps + " stopDegree: "+stopDegreeValue);
+		return (steps * DEGREES_TO_ROTATE) + stopDegreeValue;
 	}
 
 	private void computeNextRotationAngle(final float angle) {
@@ -101,7 +103,8 @@ public class RotateAnimationController implements AnimationListener{
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
-		Log.d(TAG, "raja onAnimationEnd");	
+		Log.d(TAG, "raja onAnimationEnd");
+		mainActivity.onAnimComplete(stopDegreeValue);
 	}
 
 	@Override
