@@ -184,7 +184,7 @@
             android:layout_weight="0.05" />
     </LinearLayout>
 
-    <Button
+    <Button android:id="@+id/game_start_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"

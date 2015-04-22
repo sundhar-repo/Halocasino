@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,11 +21,14 @@ public class MainActivity extends Activity implements OnAnimCompleteListener{
 	private TextView mPlayerOneTitle, mPlayerTwoTitle, mPlayer1TotalScoreTV, mPlayer2TotalScoreTV;
 	private TextView mp1LapCount, mp1LapMiddle, mp1LapScore, mp2LapScore;
 	private static int mLapCopuntNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
+	private Button mStartBtn;
+	private boolean isAnimInProgress = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mStartBtn = (Button) findViewById(R.id.game_start_btn);
 		mImageView = (ImageView) findViewById(R.id.image_view);
 		mPlayer1TotalScoreTV = (TextView) findViewById(R.id.player_one_total_score_tv);
 		mPlayer2TotalScoreTV = (TextView) findViewById(R.id.player_two_total_score_tv);
@@ -41,22 +45,15 @@ public class MainActivity extends Activity implements OnAnimCompleteListener{
 			
 			@Override
 			public void onClick(View arg0) {
-				if(mLapCopuntNumber == LAPS_MAX_COUNT && !mPlayerTwoTitle.isEnabled()){
-					//diplay dialog for start new Game
-					Toast.makeText(getApplicationContext(), "Game Over clearing data....", Toast.LENGTH_SHORT).show();
-					mPlayer1TotalScoreTV.setText("0");
-					mPlayer2TotalScoreTV.setText("0");
-					mp1LapScore.setText("");
-					mp2LapScore.setText("");
-					mPlayerOneTotalScore = 0;
-					mPlayerTwoTotalScore = 0;
-					mLapCopuntNumber = 0;
-					return;
-				}
-				controller.startChannelAnimation(MainActivity.this, getApplicationContext());
-				if(mPlayerOneTitle.isEnabled()){
-					mLapCopuntNumber++;
-				}
+				checkAndStartGame();
+			}
+		});
+		
+		mStartBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				checkAndStartGame();
 			}
 		});
 	}
@@ -64,6 +61,9 @@ public class MainActivity extends Activity implements OnAnimCompleteListener{
 	@Override
 	public void onAnimComplete(int number) {
 		Log.d(TAG, "raja onAnimComplete....update UI score: "+ number);
+		
+		isAnimInProgress = false;
+		mStartBtn.setEnabled(true);
 		if(mPlayerOneTitle.isEnabled()){
 			Log.d(TAG, "raja onAnimComplete....update Player One UI score: ");
 			mPlayerOneTitle.setEnabled(false);
@@ -104,6 +104,31 @@ public class MainActivity extends Activity implements OnAnimCompleteListener{
 				mPlayer2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
 			}
 			mp2LapScore.setText(score);
+		}
+	}
+	
+	private void checkAndStartGame() {
+		if(isAnimInProgress){
+			return;
+		}
+		
+		if(mLapCopuntNumber == LAPS_MAX_COUNT && !mPlayerTwoTitle.isEnabled()){
+			//diplay dialog for start new Game
+			Toast.makeText(getApplicationContext(), "Game Over clearing data....", Toast.LENGTH_SHORT).show();
+			mPlayer1TotalScoreTV.setText("0");
+			mPlayer2TotalScoreTV.setText("0");
+			mp1LapScore.setText("");
+			mp2LapScore.setText("");
+			mPlayerOneTotalScore = 0;
+			mPlayerTwoTotalScore = 0;
+			mLapCopuntNumber = 0;
+			return;
+		}
+		mStartBtn.setEnabled(false);
+		isAnimInProgress = true;
+		controller.startChannelAnimation(MainActivity.this, getApplicationContext());
+		if(mPlayerOneTitle.isEnabled()){
+			mLapCopuntNumber++;
 		}
 	}
 }
