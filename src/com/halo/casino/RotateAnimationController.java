@@ -45,19 +45,19 @@ public class RotateAnimationController implements AnimationListener{
 		mRotaryImage = rotaryImage;
 	}
 
-	public void startChannelAnimation(final HomeFragment object, Context context) {
+	public void startChannelAnimation(final HomeFragment object, Context context, int number) {
 		mContext = context;
 		mainActivity = object;
 		DEGREES_TO_ROTATE = 360;
 		Log.d(TAG, "raja startChannelAnimation : next = " + 1 + " prev = " + mPrevChannel);
 		
 		Log.d(TAG, "raja [ANIM] (n, p) = (" + 1 + "," + mPrevChannel + ")");
-		rotate(0, 1);
+		rotate(0, 1, number);
 		mPrevChannel = 1;
 	}
 
-	private void rotate(final int prev, final int next) {
-		float angle = computeCurrentRotationAngle(prev, next);
+	private void rotate(final int prev, final int next, int number) {
+		float angle = computeCurrentRotationAngle(prev, next, number);
 		mAlphaAnimation = new AlphaAnimation(FROM_ALPHA, TO_ALPHA);
 		mAnimationRotateCenter = new RotateAnimation(mAnimationDegree,
 				mAnimationDegree + angle, Animation.RELATIVE_TO_SELF, PIVOT_VALUE,
@@ -74,7 +74,7 @@ public class RotateAnimationController implements AnimationListener{
 		//computeNextRotationAngle(angle);
 	}
 
-	private float computeCurrentRotationAngle(final int prev, final int next) {
+	private float computeCurrentRotationAngle(final int prev, final int next, int number) {
 		/*float steps = (IMAGE_COUNT + 1 + next - prev)
 				% (IMAGE_COUNT + 1);
 		if (steps >= DIRECTION_LOWER_THRESHOLD && steps <= DIRECTION_UPPER_THRESHOLD) {
@@ -82,7 +82,8 @@ public class RotateAnimationController implements AnimationListener{
 		} else {
 			steps = steps * -1;
 		}*/
-		stopDegreeValue = getRandomNumberFrom(0, 35) * 10;
+		//stopDegreeValue = getRandomNumberFrom(0, 35) * 10;
+		stopDegreeValue = number * 10;
 		int steps = 10 * -1;
 		Log.d(TAG, "raja computeCurrentRotationAngle steps ="+ steps + " stopDegree: "+stopDegreeValue);
 		return (steps * DEGREES_TO_ROTATE) + stopDegreeValue;

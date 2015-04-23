@@ -8,14 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import com.halo.casino.listener.OnAnimCompleteListener;
+import com.halo.casino.listener.OnStartAnimListener;
 
-public class HomeFragment extends Fragment implements OnAnimCompleteListener{
+public class HomeFragment extends Fragment implements OnAnimCompleteListener, OnStartAnimListener{
 	private final String TAG = HomeFragment.class.getSimpleName();
 	
 	private final int LAPS_MAX_COUNT = 2;
@@ -26,6 +30,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 	private static int mLapCopuntNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
 	private Button mStartBtn;
 	private boolean isAnimInProgress = false;
+	private ViewAnimator mViewAnim;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,14 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 		//mp1LapCount = (TextView) view.findViewById(R.id.lap_count_tv);
 		//mp1LapMiddle = (TextView) view.findViewById(R.id.lap_middle_tv);
 		mp1LapScore = (TextView) view.findViewById(R.id.lap_score_tv);
+		mViewAnim = (ViewAnimator) view.findViewById(R.id.viewAnimator1);
+		
+		final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
+		final Animation outAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_out_right);
+	  
+		mViewAnim.setInAnimation(inAnim);
+		mViewAnim.setOutAnimation(outAnim);
+		
 		
 		controller = new RotateAnimationController(mImageView);
 		
@@ -56,7 +69,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 			
 			@Override
 			public void onClick(View arg0) {
-				checkAndStartGame();
+				//checkAndStartGame();
+				mViewAnim.showNext();
+				//mViewAnim.showPrevious();
 			}
 		});
 		
@@ -64,7 +79,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 			
 			@Override
 			public void onClick(View v) {
-				checkAndStartGame();
+				//checkAndStartGame();
+				mViewAnim.showPrevious();
+				//mViewAnim.showNext();
 			}
 		});
 		
@@ -120,7 +137,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 		}
 	}
 	
-	private void checkAndStartGame() {
+	private void checkAndStartGame(int number) {
 		if(isAnimInProgress){
 			return;
 		}
@@ -139,9 +156,14 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener{
 		}
 		mStartBtn.setEnabled(false);
 		isAnimInProgress = true;
-		controller.startChannelAnimation(HomeFragment.this, getActivity());
+		controller.startChannelAnimation(HomeFragment.this, getActivity(), number);
 		if(mPlayerOneTitle.isEnabled()){
 			mLapCopuntNumber++;
 		}
+	}
+
+	@Override
+	public void onStartAnim(int number, int player) {
+		checkAndStartGame(number);
 	}
 }

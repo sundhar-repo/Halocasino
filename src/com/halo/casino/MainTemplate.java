@@ -8,20 +8,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 
 public class MainTemplate extends FragmentActivity{
-	private String[] mPlanetTitles = {"Click"};
+	private String[] mPlanetTitles = {"1","10","5","15","25","6","30","17","11","4","19","8",};
 	private DrawerLayout mDrawerLayout;
-    private ListView mLeftDrawerList, mRightDrawerList;
+    private GridView mLeftDrawerList, mRightDrawerList;
 	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.main_template);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mLeftDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mRightDrawerList = (ListView) findViewById(R.id.right_drawer);
+		mLeftDrawerList = (GridView) findViewById(R.id.left_drawer);
+        mRightDrawerList = (GridView) findViewById(R.id.right_drawer);
         
         // Set the adapter for the list view
         mLeftDrawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -35,23 +35,31 @@ public class MainTemplate extends FragmentActivity{
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                       .replace(R.id.content_frame, fragment)
+                       .replace(R.id.content_frame, fragment, "home_fragment_tag")
                        .commit();
     }
 	
 
 	
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements GridView.OnItemClickListener {
 	    @Override
 	    public void onItemClick(AdapterView parent, View view, int position, long id) {
 	        //selectItem(position);
 	    	
 	    	if (mDrawerLayout.isDrawerOpen(mRightDrawerList)) {
                 mDrawerLayout.closeDrawer(mRightDrawerList);
-                mDrawerLayout.openDrawer(mLeftDrawerList);
+                HomeFragment mainActivity = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home_fragment_tag");
+                if(mainActivity != null){
+                	mainActivity.onStartAnim(2, 2);
+                }
+                //mDrawerLayout.openDrawer(mLeftDrawerList);
             } else if(mDrawerLayout.isDrawerOpen(mLeftDrawerList)){
             	mDrawerLayout.closeDrawer(mLeftDrawerList);
-            	mDrawerLayout.openDrawer(mRightDrawerList);
+            	HomeFragment mainActivity = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home_fragment_tag");
+                if(mainActivity != null){
+                	mainActivity.onStartAnim(30, 1);
+                }
+            	//mDrawerLayout.openDrawer(mRightDrawerList);
                 //mDrawerLayout.openDrawer(Gravity.END);
             }
 	    }

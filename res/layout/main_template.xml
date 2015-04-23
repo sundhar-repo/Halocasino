@@ -30,22 +30,22 @@
             android:layout_height="match_parent" />
         <!-- The navigation drawer -->
 
-        <ListView
+        <GridView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:numColumns="3"
             android:background="#808080"
-            android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
-        <ListView
+        <GridView
             android:id="@+id/right_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:numColumns="3"
             android:background="#808080"
-            android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
     </android.support.v4.widget.DrawerLayout>

@@ -150,7 +150,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_weight="0.1"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="Back Side"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
         android:orientation="horizontal" >
 
         <View
@@ -158,25 +177,38 @@
             android:layout_height="match_parent"
             android:layout_weight="0.05" />
 
-        <FrameLayout
+        <ViewAnimator
+            android:id="@+id/viewAnimator1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.9" >
 
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="@drawable/compass_guide" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <ImageView
-                android:id="@+id/image_view2"
-                android:layout_width="40dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:background="@drawable/arrow_down" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/compass_guide" />
+
+                <ImageView
+                    android:id="@+id/image_view2"
+                    android:layout_width="40dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/arrow_down" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/game_start_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Start" />
+        </ViewAnimator>
 
         <View
             android:layout_width="0dp"
@@ -184,11 +216,13 @@
             android:layout_weight="0.05" />
     </LinearLayout>
 
-    <Button android:id="@+id/game_start_btn"
+    <!--
+         <Button android:id="@+id/game_start_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"
         android:gravity="center"
         android:text="Start" />
+    -->
 
 </LinearLayout>
