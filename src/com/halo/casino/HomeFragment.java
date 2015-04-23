@@ -1,5 +1,7 @@
 package com.halo.casino;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,12 +24,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 	private final String TAG = HomeFragment.class.getSimpleName();
 	
 	private final int LAPS_MAX_COUNT = 2;
-	ImageView mImageView;
+	private ImageView mRotateImg, mSelectItemImg, mSelectItemBack;
 	RotateAnimationController controller;
-	private TextView mPlayerOneTitle, mPlayerTwoTitle, mPlayer1TotalScoreTV, mPlayer2TotalScoreTV;
-	private TextView mp1LapCount, mp1LapMiddle, mp1CurntLapScore, mp2CurntLapScore;
-	private static int mLapCopuntNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
-	private Button mStartBtn;
+	private TextView mP1Title, mP2Title, mP1TotalScoreTV, mP2TotalScoreTV, mP1LapsRmngCount, mP2LapsRmngCount;
+	private TextView mp1CurntLapScore, mp2CurntLapScore;
+	private static int mLapCountNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
 	private boolean isAnimInProgress = false;
 	private ViewAnimator mViewAnim;
 	
@@ -44,15 +44,21 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_main, container, false);
 		
-		mStartBtn = (Button) view.findViewById(R.id.game_start_btn);
-		mImageView = (ImageView) view.findViewById(R.id.image_view);
-		mPlayer1TotalScoreTV = (TextView) view.findViewById(R.id.player_one_total_score_tv);
-		mPlayer2TotalScoreTV = (TextView) view.findViewById(R.id.player_two_total_score_tv);
-		mPlayerOneTitle = (TextView) view.findViewById(R.id.player_one_title);
-		mPlayerTwoTitle = (TextView) view.findViewById(R.id.player_two_title);
+		mSelectItemImg = (ImageView) view.findViewById(R.id.select_item_img);
+		mSelectItemBack = (ImageView) view.findViewById(R.id.select_item_back);
+		mRotateImg = (ImageView) view.findViewById(R.id.image_view);
+		mP1TotalScoreTV = (TextView) view.findViewById(R.id.player_one_total_score_tv);
+		mP2TotalScoreTV = (TextView) view.findViewById(R.id.player_two_total_score_tv);
+		mP1Title = (TextView) view.findViewById(R.id.player_one_title);
+		mP2Title = (TextView) view.findViewById(R.id.player_two_title);
 		mp2CurntLapScore = (TextView) view.findViewById(R.id.player_two_current_score_tv);
 		mp1CurntLapScore = (TextView) view.findViewById(R.id.player_one_current_score_tv);
 		mViewAnim = (ViewAnimator) view.findViewById(R.id.viewAnimator1);
+		mP1LapsRmngCount = (TextView) view.findViewById(R.id.player_one_remng_laps_tv);
+		mP2LapsRmngCount = (TextView) view.findViewById(R.id.player_two_remng_laps_tv);
+		
+		mP1LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
+		mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
 		
 		final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
 		final Animation outAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_out_right);
@@ -61,9 +67,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		mViewAnim.setOutAnimation(outAnim);
 		
 		
-		controller = new RotateAnimationController(mImageView);
+		controller = new RotateAnimationController(mRotateImg);
 		
-		mImageView.setOnClickListener(new OnClickListener() {
+		/*mRotateImg.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -71,15 +77,59 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 				mViewAnim.showNext();
 				//mViewAnim.showPrevious();
 			}
-		});
+		});*/
 		
-		mStartBtn.setOnClickListener(new OnClickListener() {
+		/*mRotateImg.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				//checkAndStartGame();
 				mViewAnim.showPrevious();
 				//mViewAnim.showNext();
+			}
+		});*/
+	
+		
+		mSelectItemImg.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mSelectItemBack.setAlpha(0f);
+				mSelectItemBack.setVisibility(View.VISIBLE);
+				mSelectItemBack.animate()
+							  .alpha(1f);
+				
+				mSelectItemImg.animate()
+	            .alpha(0f)
+	            .setListener(new AnimatorListenerAdapter() {
+	                @Override
+	                public void onAnimationEnd(Animator animation) {
+	                	mSelectItemImg.setVisibility(View.GONE);
+	                }
+	            });
+				
+							  
+				//mSelectItemImg.startAnimation(anim);
+			}
+		});
+		
+		mSelectItemBack.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mSelectItemImg.setAlpha(0f);
+				mSelectItemImg.setVisibility(View.VISIBLE);
+				mSelectItemImg.animate()
+							  .alpha(1f);
+				
+				mSelectItemBack.animate()
+	            .alpha(0f)
+	            .setListener(new AnimatorListenerAdapter() {
+	                @Override
+	                public void onAnimationEnd(Animator animation) {
+	                	mSelectItemBack.setVisibility(View.GONE);
+	                }
+	            });
 			}
 		});
 		
@@ -91,11 +141,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		Log.d(TAG, "raja onAnimComplete....update UI score: "+ number);
 		
 		isAnimInProgress = false;
-		mStartBtn.setEnabled(true);
-		if(mPlayerOneTitle.isEnabled()){
+		
+		if(mP1Title.isEnabled()){
 			Log.d(TAG, "raja onAnimComplete....update Player One UI score: ");
-			mPlayerOneTitle.setEnabled(false);
-			mPlayerTwoTitle.setEnabled(true);
+			mP1Title.setEnabled(false);
+			mP2Title.setEnabled(true);
 			
 			//update player once score
 			mp1CurntLapScore.setText(String.valueOf(number));
@@ -106,15 +156,15 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			mPlayerOneTotalScore +=number;
 			//if(mLapCopuntNumber == LAPS_MAX_COUNT){
 				//score.append("\n"+mPlayerOneTotalScore);
-				mPlayer1TotalScoreTV.setText(String.valueOf(mPlayerOneTotalScore));
+				mP1TotalScoreTV.setText(String.valueOf(mPlayerOneTotalScore));
 			//}
 			//mp1LapScore.setText(score);
 			//score.r
-			
+			mP1LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
 		}else{
 			Log.d(TAG, "raja onAnimComplete....update Player Two UI score: ");
-			mPlayerOneTitle.setEnabled(true);
-			mPlayerTwoTitle.setEnabled(false);
+			mP1Title.setEnabled(true);
+			mP2Title.setEnabled(false);
 			
 			//update player once score
 			mp2CurntLapScore.setText(String.valueOf(number));
@@ -122,7 +172,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			Log.d(TAG, "raja Player two score: "+number);
 			//score.append("\n"+number);
 			mPlayerTwoTotalScore += number;
-			if(mLapCopuntNumber == LAPS_MAX_COUNT){
+			if(mLapCountNumber == LAPS_MAX_COUNT){
 				//score.append("\n"+mPlayerTwoTotalScore);
 				if(mPlayerTwoTotalScore > mPlayerOneTotalScore){
 					Toast.makeText(getActivity(), "Game Over...Player Two won game", Toast.LENGTH_SHORT).show();
@@ -132,7 +182,8 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 					Toast.makeText(getActivity(), "Game Over...Match Tie...", Toast.LENGTH_SHORT).show();
 				}
 			}
-			mPlayer2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
+			mP2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
+			mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
 			//mp2LapScore.setText(score);
 		}
 	}
@@ -142,23 +193,25 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			return;
 		}
 		
-		if(mLapCopuntNumber == LAPS_MAX_COUNT && !mPlayerTwoTitle.isEnabled()){
+		if(mLapCountNumber == LAPS_MAX_COUNT && !mP2Title.isEnabled()){
 			//diplay dialog for start new Game
 			Toast.makeText(getActivity(), "Game Over clearing data....", Toast.LENGTH_SHORT).show();
-			mPlayer1TotalScoreTV.setText("0");
-			mPlayer2TotalScoreTV.setText("0");
+			mP1TotalScoreTV.setText("0");
+			mP2TotalScoreTV.setText("0");
 			mp1CurntLapScore.setText("0");
 			mp2CurntLapScore.setText("0");
 			mPlayerOneTotalScore = 0;
 			mPlayerTwoTotalScore = 0;
-			mLapCopuntNumber = 0;
+			mLapCountNumber = 0;
+			mP1LapsRmngCount.setText("0/"+LAPS_MAX_COUNT);
+			mP2LapsRmngCount.setText("0/"+LAPS_MAX_COUNT);
 			return;
 		}
-		mStartBtn.setEnabled(false);
+		
 		isAnimInProgress = true;
 		controller.startChannelAnimation(HomeFragment.this, getActivity(), number);
-		if(mPlayerOneTitle.isEnabled()){
-			mLapCopuntNumber++;
+		if(mP1Title.isEnabled()){
+			mLapCountNumber++;
 		}
 	}
 
