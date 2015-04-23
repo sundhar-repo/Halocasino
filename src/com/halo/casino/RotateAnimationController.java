@@ -29,7 +29,7 @@ public class RotateAnimationController implements AnimationListener{
 	private float mAnimationDegree;
 	private int mPrevChannel = 0;
 	int i = 0;
-	private MainActivity mainActivity;
+	private HomeFragment mainActivity;
 	private int stopDegreeValue;
 
 	private int DEGREES_TO_ROTATE;
@@ -45,7 +45,7 @@ public class RotateAnimationController implements AnimationListener{
 		mRotaryImage = rotaryImage;
 	}
 
-	public void startChannelAnimation(final MainActivity object, Context context) {
+	public void startChannelAnimation(final HomeFragment object, Context context) {
 		mContext = context;
 		mainActivity = object;
 		DEGREES_TO_ROTATE = 360;
