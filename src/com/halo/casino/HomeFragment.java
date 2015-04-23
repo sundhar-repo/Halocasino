@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 	ImageView mImageView;
 	RotateAnimationController controller;
 	private TextView mPlayerOneTitle, mPlayerTwoTitle, mPlayer1TotalScoreTV, mPlayer2TotalScoreTV;
-	private TextView mp1LapCount, mp1LapMiddle, mp1LapScore, mp2LapScore;
+	private TextView mp1LapCount, mp1LapMiddle, mp1CurntLapScore, mp2CurntLapScore;
 	private static int mLapCopuntNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
 	private Button mStartBtn;
 	private boolean isAnimInProgress = false;
@@ -50,10 +50,8 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		mPlayer2TotalScoreTV = (TextView) view.findViewById(R.id.player_two_total_score_tv);
 		mPlayerOneTitle = (TextView) view.findViewById(R.id.player_one_title);
 		mPlayerTwoTitle = (TextView) view.findViewById(R.id.player_two_title);
-		mp2LapScore = (TextView) view.findViewById(R.id.p2_lap_score_tv);
-		//mp1LapCount = (TextView) view.findViewById(R.id.lap_count_tv);
-		//mp1LapMiddle = (TextView) view.findViewById(R.id.lap_middle_tv);
-		mp1LapScore = (TextView) view.findViewById(R.id.lap_score_tv);
+		mp2CurntLapScore = (TextView) view.findViewById(R.id.player_two_current_score_tv);
+		mp1CurntLapScore = (TextView) view.findViewById(R.id.player_one_current_score_tv);
 		mViewAnim = (ViewAnimator) view.findViewById(R.id.viewAnimator1);
 		
 		final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
@@ -100,16 +98,17 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			mPlayerTwoTitle.setEnabled(true);
 			
 			//update player once score
-			StringBuilder score = new StringBuilder(mp1LapScore.getText());
-			Log.d(TAG, "raja Player One score: "+score);
-			score.append("\n"+number);
+			mp1CurntLapScore.setText(String.valueOf(number));
+			//StringBuilder score = new StringBuilder(mp1LapScore.getText());
+			Log.d(TAG, "raja Player One score: "+number);
+			//score.append("\n"+number);
 			
 			mPlayerOneTotalScore +=number;
-			if(mLapCopuntNumber == LAPS_MAX_COUNT){
-				score.append("\n"+mPlayerOneTotalScore);
+			//if(mLapCopuntNumber == LAPS_MAX_COUNT){
+				//score.append("\n"+mPlayerOneTotalScore);
 				mPlayer1TotalScoreTV.setText(String.valueOf(mPlayerOneTotalScore));
-			}
-			mp1LapScore.setText(score);
+			//}
+			//mp1LapScore.setText(score);
 			//score.r
 			
 		}else{
@@ -118,12 +117,13 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			mPlayerTwoTitle.setEnabled(false);
 			
 			//update player once score
-			StringBuilder score = new StringBuilder(mp2LapScore.getText());
-			Log.d(TAG, "raja Player two score: "+score);
-			score.append("\n"+number);
+			mp2CurntLapScore.setText(String.valueOf(number));
+			//StringBuilder score = new StringBuilder(mp2cLapScore.getText());
+			Log.d(TAG, "raja Player two score: "+number);
+			//score.append("\n"+number);
 			mPlayerTwoTotalScore += number;
 			if(mLapCopuntNumber == LAPS_MAX_COUNT){
-				score.append("\n"+mPlayerTwoTotalScore);
+				//score.append("\n"+mPlayerTwoTotalScore);
 				if(mPlayerTwoTotalScore > mPlayerOneTotalScore){
 					Toast.makeText(getActivity(), "Game Over...Player Two won game", Toast.LENGTH_SHORT).show();
 				}else if(mPlayerOneTotalScore > mPlayerTwoTotalScore){
@@ -131,9 +131,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 				}else{
 					Toast.makeText(getActivity(), "Game Over...Match Tie...", Toast.LENGTH_SHORT).show();
 				}
-				mPlayer2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
 			}
-			mp2LapScore.setText(score);
+			mPlayer2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
+			//mp2LapScore.setText(score);
 		}
 	}
 	
@@ -147,8 +147,8 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			Toast.makeText(getActivity(), "Game Over clearing data....", Toast.LENGTH_SHORT).show();
 			mPlayer1TotalScoreTV.setText("0");
 			mPlayer2TotalScoreTV.setText("0");
-			mp1LapScore.setText("");
-			mp2LapScore.setText("");
+			mp1CurntLapScore.setText("0");
+			mp2CurntLapScore.setText("0");
 			mPlayerOneTotalScore = 0;
 			mPlayerTwoTotalScore = 0;
 			mLapCopuntNumber = 0;

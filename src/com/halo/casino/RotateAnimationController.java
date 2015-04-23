@@ -8,9 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
@@ -36,10 +34,12 @@ public class RotateAnimationController implements AnimationListener{
 	private static final long ANIMATION_DURATION = 10000;
 	private static final int DIRECTION_LOWER_THRESHOLD = 4;
 	private static final int DIRECTION_UPPER_THRESHOLD = 6;
-	private static final float PIVOT_VALUE = 0.5f;
-	private static final float FROM_ALPHA = 0.8f;
+	private static final float PIVOT_VALUE = 0.5f;//position
+	/*private static final float FROM_ALPHA = 0.8f;
+	private static final float TO_ALPHA = 1.0f;*/
+	private static final float FROM_ALPHA = 0.1f;//fully transparent initially
 	private static final float TO_ALPHA = 1.0f;
-	int IMAGE_COUNT = 8;
+	//int IMAGE_COUNT = 8;
 
 	public RotateAnimationController(final ImageView rotaryImage) {
 		mRotaryImage = rotaryImage;
@@ -84,7 +84,7 @@ public class RotateAnimationController implements AnimationListener{
 		}*/
 		//stopDegreeValue = getRandomNumberFrom(0, 35) * 10;
 		stopDegreeValue = number * 10;
-		int steps = 10 * -1;
+		int steps = 2 * -1;
 		Log.d(TAG, "raja computeCurrentRotationAngle steps ="+ steps + " stopDegree: "+stopDegreeValue);
 		return (steps * DEGREES_TO_ROTATE) + stopDegreeValue;
 	}

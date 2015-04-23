@@ -4,11 +4,6 @@
     android:orientation="vertical"
     android:weightSum="1.0" >
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.05" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,7 +19,7 @@
             android:id="@+id/player_one_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:enabled="true"
             android:gravity="center"
             android:text="Player One" />
@@ -32,8 +27,8 @@
         <TextView
             android:id="@+id/player_two_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:enabled="false"
             android:gravity="center"
             android:text="Player Two" />
@@ -49,27 +44,88 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="Total" />
 
         <TextView
             android:id="@+id/player_one_total_score_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0" />
 
         <TextView
             android:id="@+id/player_two_total_score_tv"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Current Score" />
+
+        <TextView
+            android:id="@+id/player_one_current_score_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/player_two_current_score_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="R/T Laps" />
+
+        <TextView
+            android:id="@+id/player_one_remng_laps_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/player_two_remng_laps_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0" />
+    </LinearLayout>
+    
+    
+<!--     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.15"
@@ -103,7 +159,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text=" ---> \n ---> \n ---> \n ---> \n " />
+                android:text=" " />
 
             <TextView
                 android:id="@+id/lap_score_tv"
@@ -135,7 +191,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text=" ---> \n ---> \n ---> \n ---> \n " />
+                android:text="" />
 
             <TextView
                 android:id="@+id/p2_lap_score_tv"
@@ -145,13 +201,14 @@
                 android:gravity="right"
                 android:text="" />
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout> -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:gravity="center">
 
         <ImageView
             android:layout_width="40dp"
