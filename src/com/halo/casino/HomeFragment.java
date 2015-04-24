@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 import android.widget.ViewAnimator;
 
 import com.halo.casino.listener.OnAnimCompleteListener;
@@ -26,11 +25,14 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 	private final int LAPS_MAX_COUNT = 2;
 	private ImageView mRotateImg, mSelectItemImg, mSelectItemBack;
 	RotateAnimationController controller;
-	private TextView mP1Title, mP2Title, mP1TotalScoreTV, mP2TotalScoreTV, mP1LapsRmngCount, mP2LapsRmngCount;
-	private TextView mp1CurntLapScore, mp2CurntLapScore;
+	//private TextView mP1Title, mP2Title, mP1TotalScoreTV, mP2TotalScoreTV, mP1LapsRmngCount, mP2LapsRmngCount;
+	//private TextView mp1CurntLapScore, mp2CurntLapScore;
 	private static int mLapCountNumber = 0, mPlayerOneTotalScore = 0, mPlayerTwoTotalScore = 0;
 	private boolean isAnimInProgress = false;
 	private ViewAnimator mViewAnim;
+
+	private ProgressBar mP1ProgressVertical, mP2ProgressVertical;
+	private boolean isP1ProgEnable = true, isP2ProgEnable;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,18 +49,20 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		mSelectItemImg = (ImageView) view.findViewById(R.id.select_item_img);
 		mSelectItemBack = (ImageView) view.findViewById(R.id.select_item_back);
 		mRotateImg = (ImageView) view.findViewById(R.id.image_view);
-		mP1TotalScoreTV = (TextView) view.findViewById(R.id.player_one_total_score_tv);
+		/*mP1TotalScoreTV = (TextView) view.findViewById(R.id.player_one_total_score_tv);
 		mP2TotalScoreTV = (TextView) view.findViewById(R.id.player_two_total_score_tv);
 		mP1Title = (TextView) view.findViewById(R.id.player_one_title);
 		mP2Title = (TextView) view.findViewById(R.id.player_two_title);
 		mp2CurntLapScore = (TextView) view.findViewById(R.id.player_two_current_score_tv);
-		mp1CurntLapScore = (TextView) view.findViewById(R.id.player_one_current_score_tv);
+		mp1CurntLapScore = (TextView) view.findViewById(R.id.player_one_current_score_tv);*/
 		mViewAnim = (ViewAnimator) view.findViewById(R.id.viewAnimator1);
-		mP1LapsRmngCount = (TextView) view.findViewById(R.id.player_one_remng_laps_tv);
-		mP2LapsRmngCount = (TextView) view.findViewById(R.id.player_two_remng_laps_tv);
+		/*mP1LapsRmngCount = (TextView) view.findViewById(R.id.player_one_remng_laps_tv);
+		mP2LapsRmngCount = (TextView) view.findViewById(R.id.player_two_remng_laps_tv);*/
+		mP1ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar);
+		mP2ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar2);
 		
-		mP1LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
-		mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
+		/*mP1LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
+		mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);*/
 		
 		final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
 		final Animation outAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_out_right);
@@ -66,6 +70,65 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		mViewAnim.setInAnimation(inAnim);
 		mViewAnim.setOutAnimation(outAnim);
 		
+		mP1ProgressVertical.setMax(100);
+		mP2ProgressVertical.setMax(100);
+		
+		
+		mP1ProgressVertical.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				isP1ProgEnable = false;
+				controller.startChannelAnimation(HomeFragment.this, getActivity(), 30);
+			}
+		});
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				int i =100;
+				while(i>=0){
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(!isP1ProgEnable){
+						break;
+					}
+					mP1ProgressVertical.setProgress(i);
+					i -=3;
+					if(i < 0){
+						i = 100;
+					}
+					
+				}
+			}
+		}).start();
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				int i =0;
+				while(i<=100){
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					mP2ProgressVertical.setProgress(i);
+					i +=3;
+					if(i > 100){
+						i = 0;
+					}
+					
+				}
+			}
+		}).start();
 		
 		controller = new RotateAnimationController(mRotateImg);
 		
@@ -142,7 +205,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		
 		isAnimInProgress = false;
 		
-		if(mP1Title.isEnabled()){
+		/*if(mP1Title.isEnabled()){
 			Log.d(TAG, "raja onAnimComplete....update Player One UI score: ");
 			mP1Title.setEnabled(false);
 			mP2Title.setEnabled(true);
@@ -185,11 +248,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			mP2TotalScoreTV.setText(String.valueOf(mPlayerTwoTotalScore));
 			mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
 			//mp2LapScore.setText(score);
-		}
+		}*/
 	}
 	
 	private void checkAndStartGame(int number) {
-		if(isAnimInProgress){
+		/*if(isAnimInProgress){
 			return;
 		}
 		
@@ -212,7 +275,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		controller.startChannelAnimation(HomeFragment.this, getActivity(), number);
 		if(mP1Title.isEnabled()){
 			mLapCountNumber++;
-		}
+		}*/
 	}
 
 	@Override
