@@ -1,5 +1,5 @@
 package com.halo.casino.listener;
 
 public interface OnAnimCompleteListener {
-	void onAnimComplete(int number);
+	void onAnimComplete(int number, int playerTurn);
 }

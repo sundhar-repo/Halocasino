@@ -40,12 +40,14 @@ public class RotateAnimationController implements AnimationListener{
 	private static final float FROM_ALPHA = 0.1f;//fully transparent initially
 	private static final float TO_ALPHA = 1.0f;
 	//int IMAGE_COUNT = 8;
-
+	int mPlayerTurn = 0;
+	
 	public RotateAnimationController(final ImageView rotaryImage) {
 		mRotaryImage = rotaryImage;
 	}
 
-	public void startChannelAnimation(final HomeFragment object, Context context, int number) {
+	public void startChannelAnimation(final HomeFragment object, Context context, int number, int playerTurn) {
+		this.mPlayerTurn = playerTurn;
 		mContext = context;
 		mainActivity = object;
 		DEGREES_TO_ROTATE = 360;
@@ -105,7 +107,7 @@ public class RotateAnimationController implements AnimationListener{
 	@Override
 	public void onAnimationEnd(Animation animation) {
 		Log.d(TAG, "raja onAnimationEnd");
-		mainActivity.onAnimComplete(stopDegreeValue);
+		mainActivity.onAnimComplete(stopDegreeValue, mPlayerTurn);
 	}
 
 	@Override
