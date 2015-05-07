@@ -1,12 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.halo.casino"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1.0" >
 
-    <!--
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.05"
@@ -122,10 +120,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center" />
-    </LinearLayout>-->
+    </LinearLayout> -->
 
-
-    <!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -146,26 +142,35 @@
             android:layout_height="40dp"
             android:src="@drawable/abc_ab_share_pack_holo_dark"
             android:visibility="gone" />
-    </LinearLayout>-->
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_weight="0.7"
         android:orientation="horizontal" >
 
-        <!-- <ProgressBar
+        <!--
+             <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05" />
+        -->
+
+        <ProgressBar
             android:id="@+id/vertical_progressbar"
             style="@style/Widget.ProgressBar.Vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.05" /> -->
-
-        <com.halo.casino.CustomScrollListView
-            android:id="@+id/p1_select_item_list"
+            android:layout_weight="0.1" />
+        
+        <ListView
+            android:id="@+id/p1_scroll_list_items"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.15" />
+            android:divider="@android:color/background_light"
+            android:dividerHeight="0dp" 
+            android:layout_weight="0.2"/>
 
         <ViewAnimator
             android:id="@+id/viewAnimator1"
@@ -193,49 +198,23 @@
             </FrameLayout>
         </ViewAnimator>
 
-        <com.halo.casino.CustomScrollListView
-            android:id="@+id/p2_select_item_list"
+        <ListView
+            android:id="@+id/p2_scroll_list_items"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"
-            custom:enabled="false" />
-
-        <!-- <ProgressBar
+            android:divider="@android:color/background_light"
+            android:dividerHeight="0dp" 
+            android:layout_weight="0.05"/>
+        
+        <ProgressBar
             android:id="@+id/vertical_progressbar2"
             style="@style/Widget.ProgressBar.Vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="0.1" />
+        <!-- <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.05" /> -->
-       
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1" >
-
-        <!-- <Button
-            android:id="@+id/p1_start_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="Start" /> -->
-
-        <Button
-            android:id="@+id/restart_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Start Game" 
-            android:visibility="visible"/>
-        
-        <!-- <Button
-            android:id="@+id/p2_start_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:enabled="false"
-            android:text="Start" /> -->
-    </RelativeLayout>
-
 </LinearLayout>

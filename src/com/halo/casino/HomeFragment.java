@@ -8,11 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -33,10 +32,12 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 	private boolean isAnimInProgress = false;
 	private ViewAnimator mViewAnim;
 
-	private ProgressBar mP1ProgressVertical, mP2ProgressVertical;
+	//private ProgressBar mP1ProgressVertical, mP2ProgressVertical;
 	
 	private CustomScrollListView p1SelectListItem, p2SelectListItem;
-	private Button mP1Start, mP2Start, mRestartGame;
+	private Button mRestartGame;
+	 
+	//private Button mP1Start, mP2Start,
 	
 	private int PLAYER_ONE_TURN = 1, PLAYER_TWO_TURN = 2; 
 	
@@ -66,13 +67,13 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		mViewAnim = (ViewAnimator) view.findViewById(R.id.viewAnimator1);
 		/*mP1LapsRmngCount = (TextView) view.findViewById(R.id.player_one_remng_laps_tv);
 		mP2LapsRmngCount = (TextView) view.findViewById(R.id.player_two_remng_laps_tv);*/
-		mP1ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar);
-		mP2ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar2);
+		/*mP1ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar);
+		mP2ProgressVertical = (ProgressBar) view.findViewById(R.id.vertical_progressbar2);*/
 		
 		p1SelectListItem = (CustomScrollListView) view.findViewById(R.id.p1_select_item_list);
 		p2SelectListItem = (CustomScrollListView) view.findViewById(R.id.p2_select_item_list);
-		mP1Start = (Button) view.findViewById(R.id.p1_start_btn);
-		mP2Start = (Button) view.findViewById(R.id.p2_start_btn);
+		/*mP1Start = (Button) view.findViewById(R.id.p1_start_btn);
+		mP2Start = (Button) view.findViewById(R.id.p2_start_btn);*/
 		mRestartGame = (Button) view.findViewById(R.id.restart_game);
 		
 		
@@ -82,22 +83,62 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		p2SelectListItem.setAdapter(new SelectScrollItemAdaptor(getActivity(), items));
 		p2SelectListItem.setDisabled();
 		
-		if(mP1Start.isEnabled()){
+		/*if(mP1Start.isEnabled()){
 			mP2Start.setEnabled(false);
-		}
+		}*/
 		
+		p1SelectListItem.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int state) {
+				Log.d(TAG, " P1 scroll state: "+state);
+				if(state == SCROLL_STATE_FLING){
+					p1SelectListItem.setDisabled();
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView arg0, int firstVisibleCell, int visibleCells, int totalCount) {
+				Log.d(TAG, " P1 firstVisibleCell: "+firstVisibleCell+" visibleCells: "+visibleCells+" totalCount: "+totalCount);
+				if(!p1SelectListItem.isEnabled()){
+					p1SelectListItem.setDisabled();
+					p2SelectListItem.setEnabled();
+				}
+			}
+		});
+		
+		p2SelectListItem.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int state) {
+				Log.d(TAG, " P2 scroll state: "+state);
+				if(state == SCROLL_STATE_FLING){
+					p2SelectListItem.setDisabled();
+				}
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView arg0, int firstVisibleCell, int visibleCells, int totalCount) {
+				Log.d(TAG, " P2 firstVisibleCell: "+firstVisibleCell+" visibleCells: "+visibleCells+" totalCount: "+totalCount);
+				if(!p2SelectListItem.isEnabled()){
+					p2SelectListItem.setDisabled();
+					p1SelectListItem.setEnabled();
+				}
+			}
+		});
 		
 		/*mP1LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);
 		mP2LapsRmngCount.setText(mLapCountNumber+"/"+LAPS_MAX_COUNT);*/
 		
-		final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
+		/*final Animation inAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_in_left);
 		final Animation outAnim = AnimationUtils.loadAnimation(getActivity() ,android.R.anim.slide_out_right);
 	  
 		mViewAnim.setInAnimation(inAnim);
-		mViewAnim.setOutAnimation(outAnim);
+		mViewAnim.setOutAnimation(outAnim);*/
 		
-		mP1ProgressVertical.setMax(100);
-		mP2ProgressVertical.setMax(100);
+		/*mP1ProgressVertical.setMax(100);
+		mP2ProgressVertical.setMax(100);*/
 		
 		//startP1Progress();
 		//startP2Progress();
@@ -157,7 +198,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			}
 		});*/
 		
-		mP1Start.setOnClickListener(new OnClickListener() {
+		/*mP1Start.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -175,9 +216,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 					checkAndStartGame(2, PLAYER_ONE_TURN);
 				}
 			}
-		});
+		});*/
 		
-		mP2Start.setOnClickListener(new OnClickListener() {
+		/*mP2Start.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -195,22 +236,31 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 					checkAndStartGame(2, PLAYER_TWO_TURN);
 				}
 			}
-		});
+		});*/
 
 		mRestartGame.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				mRestartGame.setVisibility(View.GONE);
-				mPlayerOneTotalScore = 0;
-				mPlayerTwoTotalScore = 0;
-				mLapCountNumber = 0;
-				mP1Start.setEnabled(true);
-				mP2Start.setEnabled(false);
-				
-				p1SelectListItem.setScrollStop(false);
-				p2SelectListItem.setScrollStop(false);
-				
+				String gameTxt = mRestartGame.getText().toString();
+				if(gameTxt.equalsIgnoreCase("start game")){
+					p1SelectListItem.setEnabled();
+					mRestartGame.setText("Restart Game");
+					mRestartGame.setVisibility(View.GONE);
+				}else{
+					mRestartGame.setVisibility(View.GONE);
+					mPlayerOneTotalScore = 0;
+					mPlayerTwoTotalScore = 0;
+					mLapCountNumber = 0;
+					/*mP1Start.setEnabled(true);
+					mP2Start.setEnabled(false);*/
+					
+					p1SelectListItem.setEnabled();
+					p2SelectListItem.setDisabled();
+					
+					p1SelectListItem.setScrollStop(false);
+					p2SelectListItem.setScrollStop(false);
+				}
 			}
 		});
 		
@@ -234,8 +284,10 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			}else{
 				
 			}
-			mP1Start.setEnabled(false);
-			mP2Start.setEnabled(true);
+			p1SelectListItem.setDisabled();
+			p1SelectListItem.setEnabled();
+			/*mP1Start.setEnabled(false);
+			mP2Start.setEnabled(true);*/
 		}else if(mPlayerTurn == PLAYER_TWO_TURN){
 			//stop p2 scroll list items
 			p2SelectListItem.setScrollStop(true);
@@ -247,12 +299,14 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 				mRestartGame.setEnabled(true);
 				mRestartGame.setVisibility(View.VISIBLE);
 				//total score end laps for player one
-				mP1Start.setEnabled(false);
+				//mP1Start.setEnabled(false);
+				p1SelectListItem.setDisabled();
 			}else{
-				mP1Start.setEnabled(true);
+				p1SelectListItem.setEnabled();
 			}
 			
-			mP2Start.setEnabled(false);
+			p2SelectListItem.setDisabled();
+			//mP2Start.setEnabled(false);
 		}
 		
 		/*if(mP1Title.isEnabled()){
@@ -316,8 +370,10 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 			mPlayerOneTotalScore = 0;
 			mPlayerTwoTotalScore = 0;
 			mLapCountNumber = 0;
-			mP1Start.setEnabled(true);
-			mP2Start.setEnabled(false);
+			p1SelectListItem.setEnabled();
+			p2SelectListItem.setDisabled();
+			/*mP1Start.setEnabled(true);
+			mP2Start.setEnabled(false);*/
 			/*mP1LapsRmngCount.setText("0/"+LAPS_MAX_COUNT);
 			mP2LapsRmngCount.setText("0/"+LAPS_MAX_COUNT);*/
 			return;
@@ -330,7 +386,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 		}
 	}
 	
-	public void startP1Scroll(){
+	/*public void startP1Scroll(){
 		new Thread(new Runnable() {
 			
 			@Override
@@ -348,9 +404,9 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 				}		
 			}
 		}).start();
-	}
+	}*/
 
-	public void startP2Scroll(){
+	/*public void startP2Scroll(){
 		new Thread(new Runnable() {
 			
 			@Override
@@ -368,11 +424,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 				}		
 			}
 		}).start();
-	}
+	}*/
 	
 	public void startP1Progress(){
 		
-		mP1ProgressVertical.setActivated(true);
+		/*mP1ProgressVertical.setActivated(true);
 		
 		new Thread(new Runnable() {
 			
@@ -397,11 +453,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 					
 				}
 			}
-		}).start();
+		}).start();*/
 	}
 	
 	public void startP2Progress(){
-		mP2ProgressVertical.setActivated(true);
+		/*mP2ProgressVertical.setActivated(true);
 		new Thread(new Runnable() {
 			
 			@Override
@@ -427,11 +483,11 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 					
 				}
 			}
-		}).start();
+		}).start();*/
 	}
 	
 	private void stopP1Progress(){
-		mP1ProgressVertical.setActivated(false);
+		//mP1ProgressVertical.setActivated(false);
 	}
 	
 	private void stopP1ScrollList(){
@@ -439,7 +495,7 @@ public class HomeFragment extends Fragment implements OnAnimCompleteListener, On
 	}
 	
 	private void stopP2Progress(){
-		mP2ProgressVertical.setActivated(false);
+		//mP2ProgressVertical.setActivated(false);
 	}
 	
 	private void stopP2ScrollList(){

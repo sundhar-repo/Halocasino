@@ -46,6 +46,10 @@ public class CustomScrollListView extends ListView{
 	public void setDisabled() {
 		super.setEnabled(false);
 	}
+	
+	public void setEnabled() {
+		super.setEnabled(true);
+	}
 
 	public boolean isScrollStop() {
 		return isScrollStop;
